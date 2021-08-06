@@ -86,7 +86,7 @@ more powerful, safer, flexible, and performant than POSIX shell or Zsh.
 
 ## Legal
 
-Copyright 2021 Rob Muhlestein <rob@rwx.gg>
-Released under Apache-2.0 License
-Please mention <https://youtube.com/rwxrob>
+Copyright 2021 Rob Muhlestein <rob@rwx.gg>  
+Released under Apache-2.0 License  
+Please mention <https://youtube.com/rwxrob>  
 
