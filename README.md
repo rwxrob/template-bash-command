@@ -1,7 +1,13 @@
-# Bash Command Example Template
+# Bash Command Template
 
 This is a GitHub template repo that will be copied instead of forked
-to create a new Bash command. Obviously, not all of this is needed for
+to create a new Bash command with a command something like this:
+
+```
+gh repo create rwxrob/mycmd -p rwxrob/bash-command-template
+```
+
+Obviously, not all of this is needed for
 many Bash scripts, but anything with more than two subcommands will
 benefit from the builtin tab completion, embedded Markdown help
 documentation support, and included functions (`usage`, `_filter`,
