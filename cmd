@@ -40,7 +40,7 @@ x_foo() {
 help[bar]='The `bar` command bars.'
 
 x_bar() {
-  _filterbuf "$@" && return $?
+  _buffer "$@" && return $?
   echo "would bar: $*"
 }
 
@@ -107,7 +107,7 @@ _filter(){
   done
 }
 
-_filterbuf() {
+_buffer() {
   [[ -n "$1" ]] && return 1
   "${FUNCNAME[1]}" "$(</dev/stdin)"
 }

@@ -10,7 +10,7 @@ gh repo create rwxrob/mycmd -p rwxrob/template-bash-command
 Obviously, not all of this is needed for many Bash scripts, but anything
 with more than two subcommands will benefit from the builtin tab
 completion, embedded Markdown help documentation support, and included
-functions (`usage`, `_filter`, `_filterbuf`, `_have`, etc.)
+functions (`usage`, `_filter`, `_buffer`, `_have`, etc.)
 
 ## Installation
 
