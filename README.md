@@ -1,4 +1,4 @@
-# Bash Command Boilerplate
+# Bash Command Example Template
 
 This is a GitHub template repo that will be copied instead of forked
 to create a new Bash command. Obviously, not all of this is needed for
@@ -7,14 +7,25 @@ benefit from the builtin tab completion, embedded Markdown help
 documentation support, and included functions (`usage`, `_filter`,
 `_filterbuf`, `_have`, etc.)
 
+## Installation
+
+It's usually easiest to install by cloning the repo and adding the full
+path to this repo to your `PATH`. That way you can keep up with updates.
+
+## Naming Conventions
+
+* Name repo beginning with `cmd-` to help distinguish them
+* Start command functions with `x_` to be completed
+* Start command functions with `x__` to not be completed
+
 ## Usage
 
 ```
-command
-command usage
-command help [<cmd>]
-command foo [<arg>]
-command bar [<arg>]
+example
+example usage
+example help [<cmd>]
+example foo [<arg>]
+example bar [<arg>]
 ```
 
 ## Commands
