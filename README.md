@@ -1,17 +1,16 @@
 # Bash Command Template
 
-This is a GitHub template repo that will be copied instead of forked
-to create a new Bash command with a command something like this:
+This is a GitHub template repo that will be copied instead of forked to
+create a new Bash command with a command something like this:
 
 ```
-gh repo create rwxrob/mycmd -p rwxrob/bash-command-template
+gh repo create rwxrob/mycmd -p rwxrob/template-bash-command
 ```
 
-Obviously, not all of this is needed for
-many Bash scripts, but anything with more than two subcommands will
-benefit from the builtin tab completion, embedded Markdown help
-documentation support, and included functions (`usage`, `_filter`,
-`_filterbuf`, `_have`, etc.)
+Obviously, not all of this is needed for many Bash scripts, but anything
+with more than two subcommands will benefit from the builtin tab
+completion, embedded Markdown help documentation support, and included
+functions (`usage`, `_filter`, `_filterbuf`, `_have`, etc.)
 
 ## Installation
 
@@ -20,18 +19,19 @@ path to this repo to your `PATH`. That way you can keep up with updates.
 
 ## Naming Conventions
 
-* Name repo beginning with `cmd-` to help distinguish them
+* Name repos containing single bash commands with `cmd-`
+* Name template repos beginning with `template-`
 * Start command functions with `x_` to be completed
 * Start command functions with `x__` to not be completed
 
 ## Usage
 
 ```
-example
-example usage
-example help [<cmd>]
-example foo [<arg>]
-example bar [<arg>]
+cmd
+cmd usage
+cmd help [<cmd>]
+cmd foo [<arg>]
+cmd bar [<arg>]
 ```
 
 ## Commands
@@ -62,11 +62,11 @@ is written in CommonMark (Markdown) and will displayed as Web page if
 `pandoc` and `$HELP_BROWSER` are detected, otherwise, just the Markdown is
 sent to `$PAGER` (default: `more`).
 
-## `foo`
+### `foo`
 
 The `foo` command foos.
 
-## `bar`
+### `bar`
 
 The `bar` command bars.
 
