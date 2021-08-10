@@ -21,17 +21,17 @@ path to this repo to your `PATH`. That way you can keep up with updates.
 
 * Name repos containing single bash commands with `cmd-`
 * Name template repos beginning with `template-`
-* Start command functions with `x_` to be completed
-* Start command functions with `x__` to not be completed
+* Start command functions with `command_` to be completed
+* Start command functions with `command__` to not be completed
 
 ## Usage
 
 ```
-cmd
-cmd usage
-cmd help [<cmd>]
-cmd foo [<arg>]
-cmd bar [<arg>]
+command
+command usage
+command help [<cmd>]
+command foo [<arg>]
+command bar [<arg>]
 ```
 
 ## Commands

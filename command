@@ -32,26 +32,26 @@ completion, but still want them to be avaiable, just hidden.
 
 help[foo]='The `foo` command foos.'
 
-x_foo() {
+command_foo() {
   _filter "$@" && return $?
   echo "would foo: $*"
 }
 
 help[bar]='The `bar` command bars.'
 
-x_bar() {
+command_bar() {
   _buffer "$@" && return $?
   echo "would bar: $*"
 }
 
-x__hidden() {
+command__hidden() {
   _filter "$@" && return $?
   echo "would run _hidden: $*"
 }
 
 help[usage]='The `usage` command displays a summary of usage.'
 
-x_usage() {
+command_usage() {
   local -a cmds
   for c in "${COMMANDS[@]}"; do
     [[ ${c:0:1} =~ _ ]] && continue
@@ -70,13 +70,13 @@ is written in CommonMark (Markdown) and will displayed as Web page if
 `pandoc` and `$HELP_BROWSER` are detected, otherwise, just the Markdown is
 sent to `$PAGER` (default: more).'
 
-x_help() { 
+command_help() { 
   local name="$1"
   if [[ -z "$name" ]];then
     for c in "${COMMANDS[@]}";do
-      x_help "$c" buildonly
+      command_help "$c" buildonly
     done
-    x_help main
+    command_help main
     return 0
   fi
   local title="$EXE $name"
@@ -113,8 +113,8 @@ _buffer() {
 }
 
 while IFS= read -r line; do
-  [[ $line =~ ^declare\ -f\ x_ ]] || continue
-  COMMANDS+=( "${line##declare -f x_}" )
+  [[ $line =~ ^declare\ -f\ command_ ]] || continue
+  COMMANDS+=( "${line##declare -f command_}" )
 done < <(declare -F)
 
 if [[ -n $COMP_LINE ]]; then
@@ -127,7 +127,7 @@ fi
 
 for c in "${COMMANDS[@]}"; do
   if [[ $c == "$EXE" ]]; then
-    "x_$EXE" "$@"
+    "command_$EXE" "$@"
     exit $?
   fi
 done
@@ -136,10 +136,10 @@ if [[ -n "$1" ]]; then
   declare cmd="$1"; shift
   for c in "${COMMANDS[@]}"; do
     if [[ $c == "$cmd" ]]; then
-      "x_$cmd" "$@"
+      "command_$cmd" "$@"
       exit $?
     fi
   done
 fi
 
-x_usage "$@"
+command_usage "$@"
