@@ -171,7 +171,7 @@ GitHub or similar hosting service.  '
 command_readme() {
   _trim "${help[main]}"
   local usage="$(command_usage)"
-  printf "\n\n## Commands\n\n"
+  printf "\n## Commands\n\n"
   local -a names=("${!help[@]}")
   while IFS= read -r name; do
     [[ $name = main ]] && continue
