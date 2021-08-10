@@ -60,11 +60,15 @@ multiple ways of feeding data to loops easily covers the needs
 previously requiring Python and Perl scripts. Bash scripts are also much
 more powerful, safer, flexible, and performant than POSIX shell or Zsh.
 
-## Caveats
+## Guidelines
 
+* Write GitHub Flavored Markdown only
+* Use present tense ("outputs" over "will output")
+* Prefer "output" and "display" over ~~print~~
+* Follow the [naming conventions](#naming-conventions) 
 * Use the official bash path: `#!/usr/bin/bash`
 * Using `#!/usr/bin/env bash` introduces unnecessary risk
-* Always set the acceptable `PATH` at beginning of script
+* Explicitly export `PATH` in script when possible
 * Always check script with [`shellcheck`] before releasing
 * Always use `bc` for *any* floating point math
 
