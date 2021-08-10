@@ -74,6 +74,7 @@ command_help() {
   local name="$1"
   if [[ -z "$name" ]];then
     for c in "${COMMANDS[@]}";do
+      [[ ${c:0:1} = _ ]] && continue;
       command_help "$c" buildonly
     done
     command_help main
