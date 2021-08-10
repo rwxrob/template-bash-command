@@ -18,17 +18,18 @@ EXE="${0##*/}"
 declare -A help # associative arrays *require* declaration
 
 help[main]='
-This snippet contains the scaffolding for Bash tab completion using
-the complete -C foo foo variation which allows scripts to complete
+# Sample Bash Template Command
+
+This `command` contains the scaffolding for Bash tab completion using
+the `complete -C foo foo` variation which allows scripts to complete
 themselves (rather than having another script somewhere to manage). To
 use it simply add a function with the additional command and add the
 name of it to the commands array declaration at the top of the script.
-Then add complete -C foo foo (or something like it) to your bashrc.
-Begin functions with x_ to allow useful command names to be used that
-would otherwise conflict with existing system and bash keywords. Begin
-functions with x__ when you do not want them to appear with tab
-completion, but still want them to be avaiable, just hidden.
-'
+Then add `complete -C foo foo` to your bashrc.  Begin functions with
+`command_` to allow useful command names to be used that would otherwise
+conflict with existing system and bash keywords.  Begin functions with
+`command__` when you do not want them to appear with tab completion, but
+still want them to be available, just hidden.'
 
 help[foo]='The `foo` command foos.'
 
@@ -62,6 +63,8 @@ command_usage() {
 }
 
 help[help]='
+# The `help` Command
+
 The `help` command prints help information. If no argument is passed
 displays general help information (main). Otherwise, the documentation
 for the specific argument keyword is displayed, which usually
@@ -75,29 +78,49 @@ command_help() {
   if [[ -z "$name" ]];then
     for c in "${COMMANDS[@]}";do
       [[ ${c:0:1} = _ ]] && continue;
-      command_help "$c" buildonly
+      command_help "$c" buildonly || true
     done
     command_help main
     return 0
   fi
-  local title="$EXE $name"
-  [[ $name = main ]] && title="$EXE"
+  local title own body
+  title=$(_help_title "$name")
+  if [[ -z "$title" ]]; then
+    body="${help[$name]}"
+    title="$EXE $name"
+    [[ $name = main ]] && title="$EXE"
+  else
+    body="${help[$name]}"
+    local eol=$'\n'
+    body=${body#*$title}
+  fi
   local file="/tmp/help-$EXE-$name.html"
   if _have pandoc ; then
     if _have "$HELP_BROWSER" && [[ -t 1 ]] ;then
       pandoc -s --metadata title="$title" \
-        -o "$file" <<< "${help[$name]}"
+        -o "$file" <<< "$body"
       [[ -z "$2" ]] && cd /tmp && exec "$HELP_BROWSER" "$file"
       return 0
     fi
     pandoc -s --metadata title="$title" \
-      -t plain <<< "${help[$name]}" | "$PAGER"
+      -t plain <<< "$body" | "$PAGER"
     return 0
   fi
-  echo "${help[$name]}" | "$PAGER"
+  echo -e "$title\n\n$body" | "$PAGER"
 }
 
 # --------------------- completion and delegation --------------------
+#         (better than . <(foo bloated_completion) in .bashrc)
+
+_help_title() {
+  _filter "$@" && return $?;
+  local name="$1"
+  while IFS= read -r line; do
+    [[ $line =~ ^[:space]*$ ]] && continue
+    [[ $line =~ ^#\ (.+) ]] && echo "${BASH_REMATCH[1]}" && return 0
+    return 1
+  done <<< "${help[$name]}"
+}
 
 _have(){ type "$1" &>/dev/null; }
 
