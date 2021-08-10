@@ -98,6 +98,7 @@ command__hidden() {
 }
 
 # ------------------ builtin commands and functions ------------------
+#          (https://github.com/rwxrob/template-bash-command)
 
 help[usage]='Displays a summary of usage.'
 
