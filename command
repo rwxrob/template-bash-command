@@ -97,6 +97,8 @@ command__hidden() {
   echo "would run _hidden: $*"
 }
 
+# ------------------ builtin commands and functions ------------------
+
 help[usage]='Displays a summary of usage.'
 
 command_usage() {
@@ -178,8 +180,6 @@ command_readme() {
   done < <(printf "%s\n" "${!help[@]}" | LC_COLLATE=C sort)
 }
 
-# --------------------- completion and delegation --------------------
-#         (better than . <(foo bloated_completion) in .bashrc)
 
 _help_title() {
   _filter "$@" && return $?;
@@ -209,6 +209,9 @@ _buffer() {
   [[ -n "$1" ]] && return 1
   "${FUNCNAME[1]}" "$(</dev/stdin)"
 }
+
+# --------------------- completion and delegation --------------------
+#         (better than . <(foo bloated_completion) in .bashrc)
 
 while IFS= read -r line; do
   [[ $line =~ ^declare\ -f\ command_ ]] || continue
