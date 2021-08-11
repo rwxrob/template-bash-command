@@ -144,7 +144,7 @@ Also see `readme` and `usage` commands.
 
 command_help() { 
   local name="${1:-main}" title own body
-  title=$(_help_title "$name")
+  title=$(_help_title "$name") || true
   if [[ -z "$title" ]]; then
     body="${help[$name]}"
     title="$EXE $name"
