@@ -1,7 +1,7 @@
-#!/usr/bin/bash
+#!/bin/bash
 # shellcheck disable=SC2016
 set -e
-# export PATH="/usr/bin:/usr/local/bin" # safer, if you can
+# export PATH="/bin:/usr/bin:/usr/local/bin" # safer, if you can
 
 (( BASH_VERSINFO[0] < 4 )) && echo "Bash 4+ required." && exit 1
 
@@ -66,7 +66,8 @@ more powerful, safer, flexible, and performant than POSIX shell or Zsh.
 * Use present tense ("outputs" over "will output")
 * Prefer "output" and "display" over ~~print~~
 * Follow the [naming conventions](#naming-conventions) 
-* Use the official bash path: `#!/usr/bin/bash`
+* Use the official bash path: `#!/bin/bash`
+* Use of `#!/usr/bin/bash` is outdated
 * Using `#!/usr/bin/env bash` introduces unnecessary risk
 * Explicitly export `PATH` in script when possible
 * Always check script with [`shellcheck`] before releasing
@@ -78,7 +79,7 @@ more powerful, safer, flexible, and performant than POSIX shell or Zsh.
 
 Copyright 2021 Rob Muhlestein <rob@rwx.gg>  
 Released under Apache-2.0 License  
-Please mention <https://youtube.com/rwxrob>  
+Please mention <https://rwxrob.tv>  
 
 '
 
