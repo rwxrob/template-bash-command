@@ -213,7 +213,7 @@ HELP[config]='
 ```
 
 The `config` command is for reading, writing, and displaying standard
-open desktop configurations properties. 
+open desktop configuration properties. 
 
 ### Arguments
 
@@ -224,14 +224,14 @@ With a single KEY argument fetches the value for that key and outputs
 it.
 
 With more than one argument the remaining arguments after the KEY will
-be combined into the VALUE and written to the `config` file in the
+be combined into the VALUE and written to a `values` file in the
 standard configuration home location (Search for `XDG_CONFIG_HOME` for
 more information).  
 
 ### Configuration `config` File Format
 
-The file (which is always named `config` and almost always located at
-`~/.config/'"$EXE"'/config`) uses the simplest possible format to
+The file (which is almost always located at
+`~/.config/'"$EXE"'/values`) uses the simplest possible format to
 facilitate standard UNIX parsing and filtering with any number of
 existing tools (and no `jq` dependency).
 
@@ -269,7 +269,8 @@ _set_config() {
 }
 
 _read_config() {
-  local path="$XDG_CONFIG_HOME/$EXE/config"
+  local path="$XDG_CONFIG_HOME/$EXE/values"
+  [[ -r "$path" ]] || return 1
   while IFS= read -r line; do
     [[ $line =~ ^([^=]+)=(.+)$ ]] || continue
     CONFIG["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
@@ -277,8 +278,8 @@ _read_config() {
 }
 
 _write_config() {
-  local path="$XDG_CONFIG_HOME/$EXE/config"
-  mkdir -p "${path%/config}"
+  local path="$XDG_CONFIG_HOME/$EXE/values"
+  mkdir -p "${path%/values}"
   _dump_config > "$path"
 }
 
