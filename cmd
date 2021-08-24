@@ -230,9 +230,10 @@ more information).
 
 ### Configuration `config` File Format
 
-The file (which is always named `config`) uses the simplest possible
-format to facilitate standard UNIX parsing and filtering with any number
-of existing tools (and no `jq` dependency).
+The file (which is always named `config` and almost always located at
+`~/.config/'"$EXE"'/config`) uses the simplest possible format to
+facilitate standard UNIX parsing and filtering with any number of
+existing tools (and no `jq` dependency).
 
 * One KEY=VALUE per line
 * KEYs may be anything but the equal sign (`=`)
