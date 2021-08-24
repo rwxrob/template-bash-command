@@ -284,6 +284,7 @@ _write_config() {
 }
 
 _dump_config() {
+  (( ${#CONFIG[@]} == 0 )) && return 0
   paste -d=\
     <(printf "%s\n" "${!CONFIG[@]}") \
     <(printf "%s\n" "${CONFIG[@]}")
