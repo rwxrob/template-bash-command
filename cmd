@@ -228,7 +228,7 @@ be combined into the VALUE and written to a `values` file in the
 standard configuration home location (Search for `XDG_CONFIG_HOME` for
 more information).  
 
-### Configuration `config` File Format
+### Configuration `values` File Format
 
 The file (which is almost always located at
 `~/.config/'"$EXE"'/values`) uses the simplest possible format to
