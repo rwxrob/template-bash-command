@@ -81,7 +81,7 @@ more powerful, safer, flexible, and performant than POSIX shell or Zsh.
 
 Copyright 2021 Rob Muhlestein <rob@rwx.gg>  
 Released under Apache-2.0 License  
-Please mention <https://rwxrob.tv>'
+Please mention rwxrob.tv'
 
 HELP[foo]='Foos things.'
 
