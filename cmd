@@ -269,7 +269,7 @@ _set_config() {
 }
 
 _read_config() {
-  local path="$XDG_CONFIG_HOME/$EXE/values"
+  local path=${1:-"$XDG_CONFIG_HOME/$EXE/values"}
   [[ -r "$path" ]] || return 0
   while IFS= read -r line; do
     [[ $line =~ ^([^=]+)=(.+)$ ]] || continue
