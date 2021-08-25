@@ -278,7 +278,7 @@ _read_config() {
 }
 
 _write_config() {
-  local path="$XDG_CONFIG_HOME/$EXE/values"
+  local path=${1:-"$XDG_CONFIG_HOME/$EXE/values"}
   mkdir -p "${path%/values}"
   _dump_config > "$path"
 }
