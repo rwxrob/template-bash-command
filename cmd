@@ -9,7 +9,6 @@ set -e
 : "${EDITOR:=vi}"
 : "${HELP_BROWSER:=}"
 : "${EXE:="${0##*/}"}"
-: "${XDG_CONFIG_HOME:="$HOME/.config"}"
 
 declare -A HELP
 declare -A CONFIG
@@ -210,10 +209,12 @@ HELP[config]='
 '"$EXE"' config
 '"$EXE"' config KEY
 '"$EXE"' config KEY VALUE
+'"$EXE"' config KEY ""
 ```
 
 The `config` command is for reading, writing, and displaying standard
-open desktop configuration properties. 
+open desktop configuration properties. Pass an empty string to delete
+a property.
 
 ### Arguments
 
@@ -221,12 +222,28 @@ With no arguments outputs all the currently cached configuration
 settings. 
 
 With a single KEY argument fetches the value for that key and outputs
-it.
+it. The special `dir` KEY is reserved and always outputs the full path
+to the current configuration directory containing the `values` file. The
+special `path` KEY is reserved and always outputs the full path to the
+`values` file itself.
 
 With more than one argument the remaining arguments after the KEY will
 be combined into the VALUE and written to a `values` file in the
-standard configuration home location (Search for `XDG_CONFIG_HOME` for
-more information).  
+configuration directory. 
+
+### Configuration Directory
+
+The configuration directory path relies on the following environment
+variables:
+
+* `EXE` - defaults to name of currently running command ('"$EXE"')
+* `HOME` - checked for `$HOME/.config/$EXE/values`
+* `XDG_CONFIG_HOME` - overrides `$HOME/.config`
+* `CONFIG_DIR` - full path to directory containing `values` file
+
+The `CONFIG_DIR` always takes priority over anything else if set, but is
+never implied. If the directory does not exist it will be created the
+first time a value is set.
 
 ### Configuration `values` File Format
 
@@ -246,7 +263,7 @@ portability.'
 command_config() {
   case $# in
     0) _dump_config ;; 
-    1) printf "${CONFIG[$1]}" ;;
+    1) _get_config "$@" ;;
     *) _set_config "$@" ;;
   esac
 }
@@ -261,6 +278,14 @@ _help_title() {
   done <<< "${HELP[$name]}"
 }
 
+_config_path() {
+  local dir="$HOME/.config/$EXE"
+  [[ -n "$XDG_CONFIG_HOME" ]] && dir="$XDG_CONFIG_HOME/$EXE" 
+  [[ -n "$CONFIG_DIR" ]] && dir="$CONFIG_DIR"
+  [[ -n "$1" ]] && echo "$dir/$1" && return 0
+  echo "$dir"
+}
+
 _set_config() {
   local key="$1"; shift; local val="$*"
   val="${val//$'\n'/\\n}"
@@ -268,19 +293,28 @@ _set_config() {
   _write_config
 }
 
+_get_config() {
+  local key="$1"
+  case $key in 
+    dir) _config_path "" ;;
+    path) _config_path values ;;
+    *) printf "${CONFIG[$key]}" ;;
+  esac
+}
+
 _read_config() {
-  local path=${1:-"$XDG_CONFIG_HOME/$EXE/values"}
-  [[ -r "$path" ]] || return 0
+  local values="$(_get_config path)"
+  [[ -r "$values" ]] || return 0
   while IFS= read -r line; do
     [[ $line =~ ^([^=]+)=(.+)$ ]] || continue
     CONFIG["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
-  done < "$path"
+  done < "$values"
 }
 
 _write_config() {
-  local path=${1:-"$XDG_CONFIG_HOME/$EXE/values"}
-  mkdir -p "${path%/values}"
-  _dump_config > "$path"
+  local dir="$(_get_config dir)"
+  mkdir -p "$dir"
+  _dump_config > "$dir/values"
 }
 
 _dump_config() {
