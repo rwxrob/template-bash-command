@@ -305,7 +305,10 @@ _config_set() {
   _config_write
 }
 
-_config_get() { printf "${CONFIG[$1]}"; }
+_config_get() { 
+  printf "${CONFIG[$1]}"
+  [[ -t 1 ]] && echo
+}
 
 _config_read() {
   local values="$(_config_path)"
