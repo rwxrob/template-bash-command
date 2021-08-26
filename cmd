@@ -269,9 +269,9 @@ portability.'
 
 command_config() {
   case $1 in 
-    dir)  _config_dir ;;
-    path) _config_path ;;
-    edit) _config_edit ;;
+    dir)  _config_dir;  return $? ;;
+    path) _config_path; return $? ;;
+    edit) _config_edit; return $? ;;
   esac
   case $# in
     0) _config_dump ;; 
@@ -290,12 +290,14 @@ _config_dir() {
   [[ -n "$XDG_CONFIG_HOME" ]] && dir="$XDG_CONFIG_HOME/$EXE" 
   [[ -n "$CONFIG_DIR" ]] && dir="$CONFIG_DIR"
   [[ -n "$1" ]] && echo "$dir/$1" && return 0
-  echo "$dir"
+  printf "%s" "$dir"
+  [[ -t 1 ]] && echo
 }
 
 _config_path() { 
   local file=${1:-values}
-  printf "%s/%s\n" "$(_config_dir)" "$file"
+  printf "%s/%s" "$(_config_dir)" "$file"
+  [[ -t 1 ]] && echo
 }
 
 _config_set() {
