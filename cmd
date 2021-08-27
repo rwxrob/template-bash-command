@@ -398,7 +398,7 @@ _buffer() {
 }
 
 # --------------------- completion and delegation --------------------
-#         (better than . <(foo bloated_completion) in .bashrc)
+#      `complete -C foo foo` > `source <(foo bloated_completion)`
 
 while IFS= read -r line; do
   [[ $line =~ ^declare\ -f\ command_ ]] || continue
