@@ -13,6 +13,10 @@ set -e
 declare -A HELP
 declare -A CONFIG
 
+_initialize() {
+  : # put initialization code here
+}
+
 HELP[main]='
 # Bash Template Command
 
@@ -35,8 +39,11 @@ tab completion, but will still be there. The `readme` command (which
 generates this `README.md` file is a good candidate for this.)
 
 Be sure to check out the builtin and utility functions. Some of these
-
 can be removed as well if you really want.
+
+The `_initialize` function is meant to put initialization code at the
+beginning of the script to be found easily even though it is called at
+the bottom of the script (as bash requires).
 
 ## Naming Conventions
 
@@ -408,14 +415,15 @@ if [[ -n $COMP_LINE ]]; then
   exit
 fi
 
+_config_read
+_initialize
+
 for c in "${COMMANDS[@]}"; do
   if [[ $c == "$EXE" ]]; then
     "command_$EXE" "$@"
     exit $?
   fi
 done
-
-_config_read
 
 if [[ -n "$1" ]]; then
   declare cmd="$1"; shift
