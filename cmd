@@ -27,10 +27,16 @@ gh repo create rwxrob/mycmd -p rwxrob/template-bash-command
 
 This `cmd` inside can then be renamed and finished.
 
-Obviously, not all of this is needed for many Bash scripts, but anything
-with more than two subcommands will benefit from the builtin tab
-completion, embedded Markdown help documentation support, and included
-functions (`usage`, `_filter`, `_buffer`, `_have`, etc.)
+Obviously, not all of this is needed for many Bash scripts. Just remove
+what you do not need or want. If you want to keep a command but hide it
+from users just add another underscore to the prefix which turns it into
+a hidden command, which will not be included in help documentation and
+tab completion, but will still be there. The `readme` command (which
+generates this `README.md` file is a good candidate for this.)
+
+Be sure to check out the builtin and utility functions. Some of these
+
+can be removed as well if you really want.
 
 ## Naming Conventions
 
