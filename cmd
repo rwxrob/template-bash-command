@@ -114,6 +114,13 @@ command_bar() {
   _buffer "$@" && return $?
   echo "would bar: $*"
 }
+
+HELP[some.config.setting]='Get and set `some.config.setting`.'
+
+command_some.config.setting() {
+  command_config some.config.setting "$@"
+}
+
 command__hidden() {
   _filter "$@" && return $?
   echo "would run _hidden: $*"
@@ -226,9 +233,12 @@ HELP[config]='
 '"$EXE"' config KEY
 '"$EXE"' config KEY VALUE
 '"$EXE"' config KEY ""
-'"$EXE"' config dir
+'"$EXE"' config keys
+'"$EXE"' config val[ues]
+'"$EXE"' config dir[ectory]
 '"$EXE"' config path [file]
 '"$EXE"' config edit [file]
+'"$EXE"' config del[ete]
 ```
 
 The `config` command is for reading, writing, and displaying standard
@@ -238,14 +248,17 @@ a property.
 ### Arguments
 
 With no arguments outputs all the currently cached configuration
-settings. 
+settings.
 
 With a single KEY argument fetches the value for that key and outputs
 it unless it is one of the following special (reserved) key names:
 
-* `dir` full path to config directory
+* `dir*` full path to config directory
 * `path` full path to specific config file (default: `values`) 
 * `edit` opens config file in editor (default: `editor` or `$EDITOR)
+* `keys` output the configuration keys, one per line
+* `val*` output the configuration values, one per line
+* `del*` if key argument then delete a specific key, otherwise prompt
 
 With more than one argument the remaining arguments after the KEY will
 be combined into the VALUE and written to a `values` file in the
@@ -282,9 +295,12 @@ portability.'
 
 command_config() {
   case $1 in 
-    dir)  _config_dir;  return $? ;;
-    path) _config_path; return $? ;;
-    edit) _config_edit; return $? ;;
+    dir*) shift; _config_dir  "$@"; return $? ;;
+    path) shift; _config_path "$@"; return $? ;;
+    edit) shift; _config_edit "$@"; return $? ;;
+    del*) shift; _config_del  "$@"; return $? ;;
+    keys) shift; _config_keys "$@"; return $? ;;
+    val*) shift; _config_vals "$@"; return $? ;;
   esac
   case $# in
     0) _config_dump ;; 
@@ -297,6 +313,20 @@ _config_edit() {
   : "${CONFIG[editor]:="${EDITOR:=vi}"}"
   exec "${CONFIG[editor]}" "$(_config_path "${1:-values}")"
 }
+
+_config_del() {
+  if [[ -z "$1" ]];then
+    select key in "${!CONFIG[@]}"; do
+      _config_del "$key"
+      return $? 
+    done
+  fi
+  _config_set "$1" ''
+}
+
+_config_keys() { printf "%s\n" "${!CONFIG[@]}"; }
+
+_config_vals() { printf "%s\n" "${CONFIG[@]}"; }
 
 _config_dir() {
   local dir="$HOME/.config/$EXE"
