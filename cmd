@@ -95,7 +95,7 @@ passes them to the calling function as the first argument. The UNIX philosophy r
 
 Takes the name of an array and a bash extended regular expression
 and prints only the array entries that match, one to a line suitable for
-converting back into an array with `IFS=$'\n'` or just as an in-memory
+converting back into an array with `IFS=$'"'\\\n'"'` or just as an in-memory
 `grep` replacement.
 
 ### `_jsonstr`
