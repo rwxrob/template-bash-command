@@ -434,7 +434,8 @@ _config_dump() {
   (( ${#CONF[@]} == 0 )) && return 0
   paste -d=\
     <(printf "%s\n" "${!CONF[@]}") \
-    <(printf "%s\n" "${CONF[@]}")
+    <(printf "%s\n" "${CONF[@]}") \
+  | sort
 }
 
 # ----------------------------- utilities ----------------------------
