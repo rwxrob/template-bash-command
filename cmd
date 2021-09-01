@@ -36,14 +36,8 @@ This `cmd` inside can then be renamed and finished.
 * Name repos containing single bash commands with `cmd-`
 * Name template repos beginning with `template-`
 * Start command functions with `x_` to be completed
-* Start command functions with `x__` to not be completed
 
-Think of the `x` as in "executable" command.
-
-If you want to keep a command but hide it from users just add another
-underscore to the prefix which turns it into a hidden command, which
-will not be included in help documentation and tab completion, but will
-still be there. 
+Think of `x` as in "executable" command.
 
 ## Builtins and Utilities
 
@@ -155,7 +149,7 @@ Please mention rwxrob.tv'
 
 HELP[foo]='Foos things.'
 
-x_foo() {
+x_foo () {
   _filter "$@" && return $?
   echo "would foo: $*"
 }
@@ -168,7 +162,7 @@ HELP[bar]='
 
 Bar the things.'
 
-x_foo() {
+x_bar() {
   _buffer "$@" && return $?
   echo "would bar: $*"
 }
@@ -177,11 +171,6 @@ HELP[some.config.setting]='Get and set `some.config.setting`.'
 
 x_some.config.setting() {
   x_config some.config.setting "$@"
-}
-
-x__hidden() {
-  _filter "$@" && return $?
-  echo "would run _hidden: $*"
 }
 
 ############################## BOILERPLATE ###########################
@@ -364,7 +353,7 @@ x_config() {
     val*) shift; _config_vals "$@"; return $? ;;
   esac
   case $# in
-    0) _config_dump ;; 
+    0) _config_dump ;;
     1) _config_get "$@" ;;
     *) _config_set "$@" ;;
   esac
@@ -514,7 +503,7 @@ mapfile -t COMMANDS < \
 if [[ -n $COMP_LINE ]]; then
   line=${COMP_LINE#* }
   for c in "${COMMANDS[@]}"; do
-    [[ ${c:0:${#line}} == "${line,,}" && ${c:0:1} != _ ]] && echo "$c"
+    [[ ${c:0:${#line}} == "${line,,}" ]] && echo "$c"
   done
   exit
 fi
