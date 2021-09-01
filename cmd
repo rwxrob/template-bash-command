@@ -11,7 +11,7 @@ set -e
 : "${EXE:="${0##*/}"}"
 
 declare -A HELP
-declare -A CONFIG
+declare -A CONF
 
 _initialize() {
   : # put initialization code here
@@ -36,8 +36,8 @@ This `cmd` inside can then be renamed and finished.
 * Name repos containing single bash commands with `cmd-`
 * Name template repos beginning with `template-`
 * Start command functions with `x.` to be completed
-* Name `CONFIG` accessors with `x.` and full path
-* Use dot (`.`) pathing in `CONFIG` key names
+* Name `CONF` accessors with `x.` and full path
+* Use dot (`.`) pathing in `CONF` key names
 
 Think of `x` as in "executable" command.
 
@@ -370,13 +370,13 @@ x.config() {
 }
 
 _config_edit() {
-  : "${CONFIG[editor]:="${EDITOR:=vi}"}"
-  exec "${CONFIG[editor]}" "$(_config_path "${1:-values}")"
+  : "${CONF[editor]:="${EDITOR:=vi}"}"
+  exec "${CONF[editor]}" "$(_config_path "${1:-values}")"
 }
 
 _config_del() {
   if [[ -z "$1" ]];then
-    select key in "${!CONFIG[@]}"; do
+    select key in "${!CONF[@]}"; do
       _config_del "$key"
       return $? 
     done
@@ -384,9 +384,9 @@ _config_del() {
   _config_set "$1" ''
 }
 
-_config_keys() { printf "%s\n" "${!CONFIG[@]}"; }
+_config_keys() { printf "%s\n" "${!CONF[@]}"; }
 
-_config_vals() { printf "%s\n" "${CONFIG[@]}"; }
+_config_vals() { printf "%s\n" "${CONF[@]}"; }
 
 _config_dir() {
   local dir="$HOME/.config/$EXE"
@@ -406,12 +406,12 @@ _config_path() {
 _config_set() {
   local key="$1"; shift; local val="$*"
   val="${val//$'\n'/\\n}"
-  CONFIG["$key"]="$val"
+  CONF["$key"]="$val"
   _config_write
 }
 
 _config_get() { 
-  printf "${CONFIG[$1]}"
+  printf "${CONF[$1]}"
   [[ -t 1 ]] && echo
 }
 
@@ -420,7 +420,7 @@ _config_read() {
   [[ -r "$values" ]] || return 0
   while IFS= read -r line; do
     [[ $line =~ ^([^=]+)=(.+)$ ]] || continue
-    CONFIG["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
+    CONF["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
   done < "$values"
 }
 
@@ -431,10 +431,10 @@ _config_write() {
 }
 
 _config_dump() {
-  (( ${#CONFIG[@]} == 0 )) && return 0
+  (( ${#CONF[@]} == 0 )) && return 0
   paste -d=\
-    <(printf "%s\n" "${!CONFIG[@]}") \
-    <(printf "%s\n" "${CONFIG[@]}")
+    <(printf "%s\n" "${!CONF[@]}") \
+    <(printf "%s\n" "${CONF[@]}")
 }
 
 # ----------------------------- utilities ----------------------------
