@@ -17,6 +17,13 @@ _initialize() {
   : # put initialization code here
 }
 
+_alternatives() {
+  # put alternative argument possibilities here
+  if [[ $CMD = f ]];then
+    x.foo "$@"
+  fi
+}
+
 HELP[main]='
 # Bash Template Command
 
@@ -61,7 +68,21 @@ or want.
 
 The `_initialize` function is meant to contain initialization code and
 be placed at the beginning of the script to be found easily even though
-it is called at the bottom of the script (as bash requires).
+it is called at the bottom of the script (as bash requires). It is
+passed the arguments that are passed to the script itself. This function can be omitted.
+
+### `_alternatives`
+
+The `_alternatives` function (usually placed after `_initialize`
+provides a hook for dealing with alternative arguments to those that
+identify commands (`x.*`). If the first argument to the script does not
+match a command function then this function will be called before the
+default `x.usage` command allowing shortcuts and other argument
+alternatives and intelligent sensing of what command function is wanted
+by simply examining the argument list. This can be useful when you wish
+to provide shortcuts for longer commands but do not want to clutter the
+command usage and completion list. For example, `zet dex.titles` could
+be trapped in `_alternatives` to call `zet titles`. 
 
 ### `_have`
 
@@ -520,7 +541,7 @@ if [[ -n $COMP_LINE ]]; then
 fi
 
 _config_read
-_initialize
+_have _initialize && _initialize "$@"
 
 for c in "${COMMANDS[@]}"; do
   if [[ $c == "$EXE" ]]; then
@@ -530,13 +551,18 @@ for c in "${COMMANDS[@]}"; do
 done
 
 if [[ -n "$1" ]]; then
-  declare cmd="$1"; shift
+  declare CMD="$1"; shift
   for c in "${COMMANDS[@]}"; do
-    if [[ $c == "$cmd" ]]; then
-      "x.$cmd" "$@"
+    if [[ $c == "$CMD" ]]; then
+      "x.$CMD" "$@"
       exit $?
     fi
   done
+fi
+
+if _have _alternatives; then
+  _alternatives "$@" 
+  exit $?
 fi
 
 x.usage "$@"
