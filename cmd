@@ -462,7 +462,7 @@ _config_dump() {
 # ----------------------------- utilities ----------------------------
 
 _jsonstr() {
-  _checkdep jq
+  _checkdep jq || return $?
   _buffer "$@" && return $?
   jq -MRsc <<< "$1"
 }
