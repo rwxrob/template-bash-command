@@ -553,7 +553,8 @@ done
 if [[ -n "$1" ]]; then
   declare CMD="$1"; shift
   for c in "${COMMANDS[@]}"; do
-    if [[ $c == "$CMD" ]]; then
+    declare cmd=$(command -v "x.$c")
+    if [[ $c == "$CMD" && -n "$cmd" ]]; then
       "x.$CMD" "$@"
       exit $?
     fi
