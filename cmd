@@ -525,6 +525,9 @@ _buffer() {
 # --------------------- completion and delegation --------------------
 #      `complete -C foo foo` > `source <(foo bloated_completion)`
 
+_config_read
+_have _initialize && _initialize "$@"
+
 while IFS= read -r line; do
   [[ $line =~ ^declare\ -f\ x\. ]] || continue
   COMMANDS+=( "${line##declare -f x.}" )
@@ -539,9 +542,6 @@ if [[ -n $COMP_LINE ]]; then
   done
   exit
 fi
-
-_config_read
-_have _initialize && _initialize "$@"
 
 for c in "${COMMANDS[@]}"; do
   if [[ $c == "$EXE" ]]; then
