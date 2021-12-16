@@ -416,12 +416,14 @@ _config_dir() {
   [[ -n "$1" ]] && echo "$dir/$1" && return 0
   printf "%s" "$dir"
   [[ -t 1 ]] && echo
+  return 0
 }
 
 _config_path() { 
   local file=${1:-values}
   printf "%s/%s" "$(_config_dir)" "$file"
   [[ -t 1 ]] && echo
+  return 0
 }
 
 _config_set() {
@@ -432,8 +434,9 @@ _config_set() {
 }
 
 _config_get() { 
-  printf "${CONF[$1]}"
+  printf "%s" "${CONF[$1]}"
   [[ -t 1 ]] && echo
+  return 0
 }
 
 _config_read() {
