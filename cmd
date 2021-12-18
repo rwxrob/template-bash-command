@@ -182,6 +182,12 @@ more powerful, safer, flexible, and performant than POSIX shell or Zsh.
 
 [`shellcheck`]: <https://www.shellcheck.net>
 
+## Security
+
+This script is expected to be installed for a specific user and only
+ever run by that user. No additional security vetting for running as an
+untrusted user has been done.
+
 ## Legal
 
 Copyright 2021 Rob Muhlestein <rob@rwx.gg>  
