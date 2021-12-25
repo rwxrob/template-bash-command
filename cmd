@@ -224,7 +224,7 @@ x.some.config.setting() {
 ## Everything from here to the end of file can be snipped and updated
 ## with latest from https://github.com/rwxrob/template-bash-command.
 
-# -------------------------- utility command -------------------------
+# ------------------------------- usage ------------------------------
 
 HELP[usage]='Displays a summary of usage.'
 
@@ -238,7 +238,7 @@ x.usage() {
   printf "usage: %s (%s)\n" "$EXE" "${cmds[*]}"
 }
 
-# --------------------------- help command ---------------------------
+# ------------------------------- help -------------------------------
 
 HELP[help]='
 
@@ -293,7 +293,7 @@ _help_title() {
   done <<< "${HELP[$name]}"
 }
 
-# -------------------------- readme command --------------------------
+# ------------------------------ readme ------------------------------
 
 HELP[readme]='
 ## Generate `README.md` File
@@ -321,7 +321,7 @@ x.readme() {
 # x.json() { _jsonstr "$@"; }
 # x.urlencode() { _urlencode "$@"; }
 
-# -------------------------- config command --------------------------
+# ------------------------------ config ------------------------------
 
 HELP[config]='
 
