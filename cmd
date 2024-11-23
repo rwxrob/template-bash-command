@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # shellcheck disable=SC2016
 set -e
 # export PATH="/bin:/usr/bin:/usr/local/bin" # safer, if you can
@@ -13,15 +13,15 @@ set -e
 declare -A HELP
 declare -A CONF
 
-declare black="\e[30m"
-declare red="\e[31m"
-declare green="\e[32m"
-declare yellow="\e[33m"
-declare blue="\e[34m"
-declare magenta="\e[35m"
-declare cyan="\e[36m"
-declare white="\e[37m"
-declare reset="\e[0m"
+# declare black=$'\e[30m'
+# declare red=$'\e[31m'
+# declare green=$'\e[32m'
+# declare yellow=$'\e[33m'
+# declare blue=$'\e[34m'
+# declare magenta=$'\e[35m'
+# declare cyan=$'\e[36m'
+# declare white=$'\e[37m'
+# declare reset=$'\e[0m'
 
 _initialize() {
   : # put initialization code here
